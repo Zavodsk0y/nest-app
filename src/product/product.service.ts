@@ -26,4 +26,8 @@ export class ProductService {
     updateProduct(id: number, updateProductDto: UpdateProductDto) {
         return this.prisma.product.update({where: {id}, data: updateProductDto});
     }
+
+    deleteProduct(id: number) {
+        return this.prisma.product.delete({where: {id}})
+    }
 }
