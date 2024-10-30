@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 const products = [
     {"id": 1, "name": "Dishes"}, 
@@ -8,8 +9,9 @@ const products = [
 
 @Injectable()
 export class ProductService {
-    getProducts(): Array<object> {
-        return products
+    constructor(private readonly prisma: PrismaService) {}
+    getProducts() {
+        return this.prisma.product.findMany()
     }
 
     findProduct(routeParameter: any): Array<object> {
