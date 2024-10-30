@@ -5,6 +5,7 @@ import { HttpStatus, ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY}));
+  app.setGlobalPrefix('api');
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

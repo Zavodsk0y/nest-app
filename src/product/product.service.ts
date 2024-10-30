@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateProductDto } from './dto/create-product.dto';
 
 const products = [
     {"id": 1, "name": "Dishes"}, 
@@ -14,13 +15,11 @@ export class ProductService {
         return this.prisma.product.findMany()
     }
 
-    findProduct(routeParameter: any): Array<object> {
-        return [
-            {
-                "id": `${routeParameter.id}`, 
-                "message": `You are trying to find product with ${routeParameter.id}`, 
-                "product": products.find(product => product.id == routeParameter.id)
-            }
-        ]
+    findProduct(id: number) {
+        return this.prisma.product.findUnique({where: {id}})
+    }
+
+    createProduct(createProductDto: CreateProductDto) {
+        return this.prisma.product.create({data: createProductDto});
     }
 }

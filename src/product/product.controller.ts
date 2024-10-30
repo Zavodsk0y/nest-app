@@ -12,12 +12,12 @@ export class ProductController {
   }
 
   @Get(':id')
-  findProduct(@Param() params: any): Array<object> {
-    return this.productService.findProduct(params)
+  findProduct(@Param('id') id: string) {
+    return this.productService.findProduct(+id)
   }
 
   @Post()
-  async storeProduct(@Body() createProductDto: CreateProductDto) {
-  return createProductDto
+  storeProduct(@Body() createProductDto: CreateProductDto) {
+  return this.productService.createProduct(createProductDto)
 }
 }
