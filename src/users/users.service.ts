@@ -21,8 +21,4 @@ export class UsersService {
   update(id: number, updateUserDto: UpdateUserDto) {
     return this.prisma.user.update({where: {id}, data: updateUserDto})
   }
-
-  remove(id: number) {
-    return this.prisma.user.delete({where: {id}})
-  }
 }

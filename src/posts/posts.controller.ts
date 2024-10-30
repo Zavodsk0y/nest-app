@@ -2,33 +2,36 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from 
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { PostEntity } from './entities/post.entity';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
-  create(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.create(createPostDto);
+  async create(@Body() createPostDto: CreatePostDto) {
+    return new PostEntity(await this.postsService.create(createPostDto));
   }
 
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  async findAll() {
+    const posts = await this.postsService.findAll();
+
+    return posts.map((post) => new PostEntity(post))
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.postsService.findOne(id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return new PostEntity(await this.postsService.findOne(id));
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() updatePostDto: UpdatePostDto) {
-    return this.postsService.update(id, updatePostDto);
+  async update(@Param('id', ParseIntPipe) id: number, @Body() updatePostDto: UpdatePostDto) {
+    return new PostEntity(await this.postsService.update(id, updatePostDto));
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.postsService.remove(id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return new PostEntity(await this.postsService.remove(id));
   }
 }
